@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<link href="https://fonts.googleapis.com/css?family=Maven+Pro" rel="stylesheet">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Song Lyric Selector</title>
+
+    <style>
+      html, pre {
+        font-family: 'Maven Pro', sans-serif;
+      }
+      body {
+        width: 900px;
+        margin: 0 auto;
+        background-color: lightblue;
+      }
+      pre {
+        line-height: 1.5;
+        letter-spacing: 0.05rem;
+        padding: .5rem;
+        background-color: white;
+      }
+      label {
+        width: 400px;
+        margin-right: 33px;
+      }
+      select {
+        width: 350px;
+        padding: 2px;
+      }
+    </style>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <h1>Song Selector</h1>
+
+    <form>
+      <label for="song-choose">Choose a number depending on your mood: </label>
+      <select id="song-choose" name="song-choose">
+        <option>song 1</option>
+        <option>song 2</option>
+        <option>song 3</option>
+        <option>song 4</option>
+      </select>
+    </form>
+
+    <h2>Song 1- Happy || Song 2- Sad || Song 3- Angry || Song 4- Good
+    </h2>
+
+    <pre>
+
+    </pre>
+
+    <script>
+        
+//        first grab the select and pre elements and store them as variables
+        
+        var songChoose = document.querySelector('select');
+        var display = document.querySelector('pre');
+        
+    //define an onchange event handler function so that when the select's value is changed, its value is passed to an invoked function updateDisplay() as a parameter
+        
+        songChoose.onchange = function() {
+          var song = songChoose.value;
+          updateDisplay(song);
+        };   
+        
+    //define the updateDisplay function
+    //the select element returns "song _", which is a reference to one of the .txt files. We need to bridge this reference and create a relative path to the text file
+        
+        function updateDisplay(song) {
+            song = song.replace(" ", "");
+            song = song.toLowerCase();
+            var url = song + '.txt';
+            
+            //The Fetch API is basically a modern replacement for XHR — it was introduced in browsers recently to make asynchronous HTTP requests easier to do in JavaScript, both for developers and other APIs that build on top of Fetch.
+            
+            //pass the URL of the resource we want to fetch
+            
+            //then is a Promise-- a JavaScript feature for performing asynchronous operations
+            
+            //function is automatically passed the response from the server as a parameter when the fetch() promise resolves
+            
+            //Text is a method that returns the response as raw text. It also returns another promise!
+            
+            //finally we grab the display variable, which refers to the pre element
+            
+            //textContent property sets or returns the text content of the specified node, and all its descendants
+            
+            fetch(url).then(function(response) {
+            response.text().then(function(text) {
+            display.textContent = text;
+                //console.log(text);
+                });
+            }); 
+        };
+    
+    //give us a song on load (because song 1 is pre-selected)
+        updateDisplay('song 1');
+        songChoose.value = 'song 1';  
+        
+    </script>
+  </body>
+</html>
